@@ -9,9 +9,9 @@ from keras.layers import LSTM
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 import pandas as pd
-pd.set_option('display.max_columns',1000)
+pd.set_option('display.max_columns', 1000)
 pd.set_option('display.width', 1000)
-pd.set_option('display.max_colwidth',1000)
+pd.set_option('display.max_colwidth', 1000)
 """
 数据形状：
 x -> y = [93,3,1] -> [93,1]
@@ -52,7 +52,7 @@ dataset = scaler.fit_transform(dataset)
 # 分割2/3数据作为测试
 train_size = int(len(dataset) * 0.67)
 test_size = len(dataset) - train_size
-train, test = dataset[0:train_size,:], dataset[train_size:len(dataset),:]
+train, test = dataset[0:train_size, :], dataset[train_size:len(dataset), :]
 # 预测数据步长为3,三个预测一个，3->1
 look_back = 3
 trainX, trainY = create_dataset(train, look_back)
@@ -62,7 +62,7 @@ trainX = numpy.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
 testX = numpy.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 # 构建 LSTM 网络
 model = Sequential()
-model.add(LSTM(4, input_shape=(1, look_back)))
+model.add(LSTM(4, input_shape=(look_back, 1)))
 model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
 model.fit(trainX, trainY, epochs=100, batch_size=1, verbose=2)
@@ -77,9 +77,9 @@ testPredict = scaler.inverse_transform(testPredict)
 testY = scaler.inverse_transform([testY])
 # 计算RMSE误差
 trainScore = math.sqrt(mean_squared_error(trainY[0], trainPredict[:,0]))
-print('Train Score: %.2f RMSE' % (trainScore))
+print('Train Score: %.2f RMSE' % trainScore)
 testScore = math.sqrt(mean_squared_error(testY[0], testPredict[:,0]))
-print('Test Score: %.2f RMSE' % (testScore))
+print('Test Score: %.2f RMSE' % testScore)
 
 # 构造一个和dataset格式相同的数组，共145行，dataset为总数据集，把预测的93行训练数据存进去
 trainPredictPlot = numpy.empty_like(dataset)

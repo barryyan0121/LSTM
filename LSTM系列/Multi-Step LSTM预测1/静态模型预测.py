@@ -11,6 +11,7 @@ from pandas import datetime
 def parser(x):
     return datetime.strptime(x, '%Y/%m/%d')
 
+
 # 把数据拆分，线性数据变成四个一组的监督型数据
 def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
     n_vars = 1 if type(data) is list else data.shape[1]

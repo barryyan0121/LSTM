@@ -97,7 +97,7 @@ series = read_csv('data_set/shampoo-sales.csv', header=0, parse_dates=[0], index
 
 # 让数据变成稳定的
 raw_values = series.values
-diff_values = difference(raw_values, 1)#转换成差分数据
+diff_values = difference(raw_values, 1)  # 转换成差分数据
 
 # 把稳定的数据变成有监督数据
 supervised = timeseries_to_supervised(diff_values, 1)
@@ -109,17 +109,15 @@ train, test = supervised_values[0:-12], supervised_values[-12:]
 # 数据缩放
 scaler, train_scaled, test_scaled = scale(train, test)
 
-
-
-#重复实验   
+# 重复实验
 repeats = 30
 error_scores = list()
 for r in range(repeats):
     # fit 模型
-    lstm_model = fit_lstm(train_scaled, 1, 100, 4)  # 训练数据，batch_size，epoche次数, 神经元个数
+    lstm_model = fit_lstm(train_scaled, 1, 100, 4)  # 训练数据，batch_size，epoch次数, 神经元个数
     # 预测
-    train_reshaped = train_scaled[:, 0].reshape(len(train_scaled), 1, 1)#训练数据集转换为可输入的矩阵
-    lstm_model.predict(train_reshaped, batch_size=1)#用模型对训练数据矩阵进行预测
+    train_reshaped = train_scaled[:, 0].reshape(len(train_scaled), 1, 1)  # 训练数据集转换为可输入的矩阵
+    lstm_model.predict(train_reshaped, batch_size=1)  # 用模型对训练数据矩阵进行预测
     # 测试数据的前向验证，实验发现，如果训练次数很少的话，模型回简单的把数据后移，以昨天的数据作为今天的预测值，当训练次数足够多的时候
     # 才会体现出来训练结果
     predictions = list()
@@ -136,10 +134,10 @@ for r in range(repeats):
         print('Moth=%d, Predicted=%f, Expected=%f' % (i + 1, yhat, expected))
     # 性能报告
     rmse = sqrt(mean_squared_error(raw_values[-12:], predictions))
-    print('%d) Test RMSE:%.3f' %(r+1,rmse))
+    print('%d) Test RMSE:%.3f' % (r+1, rmse))
     error_scores.append(rmse)
 
-#统计信息   
+# 统计信息
 results = DataFrame()
 results['rmse'] = error_scores
 print(results.describe())

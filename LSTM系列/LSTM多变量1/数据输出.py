@@ -14,10 +14,10 @@ groups.remove(4)  # 删除数组中的值4，因为第四列是字符串，删�
 i = 1
 # 输出列曲线图
 pyplot.figure()
-#循环画出values的每一列数据
+# 循环画出values的每一列数据
 for group in groups:
-    pyplot.subplot(len(groups), 1, i)  # 创建len(gourps)行，1列的子图，表示在第i个子图画图
-    pyplot.plot(values[:, group])#画出values中第group列的数据
+    pyplot.subplot(len(groups), 1, i)  # 创建len(groups)行，1列的子图，表示在第i个子图画图
+    pyplot.plot(values[:, group])  # 画出values中第group列的数据
     pyplot.title(dataset.columns[group], y=0.5, loc='right')
     i += 1
 pyplot.show()

@@ -7,7 +7,7 @@ from sklearn.preprocessing import LabelEncoder
 
 
 # 转换成有监督数据
-def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):  # n_in,n_out相当于lag
+def series_to_supervised(data, n_in=1, n_out=1, dropna=True):  # n_in,n_out相当于lag
     n_vars = 1 if type(data) is list else data.shape[1]  # 变量个数
     df = DataFrame(data)
     print('待转换数据')
@@ -34,7 +34,7 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):  # n_in,n_out相�
     print(agg[0:5])
     agg.columns = names
     # 将空值NaN行删除
-    if dropnan:
+    if dropna:
         agg.dropna(inplace=True)
     return agg
 

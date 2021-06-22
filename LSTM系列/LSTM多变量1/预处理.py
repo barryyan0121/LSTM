@@ -7,7 +7,8 @@ from pandas import datetime
 def parser(x):
     return datetime.strptime(x, '%Y %m %d %H')
 
-#加载数据
+
+# 加载数据
 dataset = read_csv('data_set/air_pollution.csv', parse_dates=[['year', 'month', 'day', 'hour']], index_col=0,
                    date_parser=parser)
 # axis=1,表示删除列；inplace=True,直接在原DataFrame上执行删除

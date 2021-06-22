@@ -26,9 +26,9 @@ series = read_csv("data_set\shampoo-sales.csv", header=0, parse_dates=[0], index
 # 第一组数据用0补全，即为[0,n]，这就是所谓的监督学习数据
 def timeseries_to_supervised(data, lag=1):  # lag表示的是当前的值只与历史lag个时间步长的值有关，也就是用lag个数据预测下一个
     df = DataFrame(data)
-    colums = [df.shift(i) for i in range(1, lag + 1)]  # 原始数据时间窗向后移动lag步长
-    colums.append(df)  # 拼接数据
-    df = concat(colums, axis=1)  # 横向拼接重塑数据，格式:input putput
+    columns = [df.shift(i) for i in range(1, lag + 1)]  # 原始数据时间窗向后移动lag步长
+    columns.append(df)  # 拼接数据
+    df = concat(columns, axis=1)  # 横向拼接重塑数据，格式:input putput
     df.fillna(0, inplace=True)  # 由于数据整体向后滑动lag后，前面的lag个数据是Na形式，用0来填充
     return df
 

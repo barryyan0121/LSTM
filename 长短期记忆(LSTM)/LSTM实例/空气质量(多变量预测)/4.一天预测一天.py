@@ -12,14 +12,16 @@ from keras.layers import Dense
 from keras.layers import LSTM
 import pandas as pd
 
-pd.set_option('display.max_columns',1000)
+pd.set_option('display.max_columns', 1000)
 pd.set_option('display.width', 1000)
-pd.set_option('display.max_colwidth',1000)
+pd.set_option('display.max_colwidth', 1000)
 
 """
 在最后部分，计算REM误差时有一系列奇怪的操作
 猜测是因为逆缩放时对数据形状有要求，所以花力气将数据拼接成原有形状
 """
+
+
 # convert series to supervised learning
 def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
     # 获取特征值数量n_vars
@@ -40,9 +42,9 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
         cols.append(df.shift(-i))
         print(cols)
         if i == 0:
-        	names += [('var%d(t)' % (j+1)) for j in range(n_vars)]
+            names += [('var%d(t)' % (j+1)) for j in range(n_vars)]
         else:
-        	names += [('var%d(t+%d)' % (j+1, i)) for j in range(n_vars)]
+            names += [('var%d(t+%d)' % (j+1, i)) for j in range(n_vars)]
     print(cols)
     # 将列表中两个张量按照列拼接起来，list(v1,v2)->[v1,v2],其中v1向下移动了一行，此时v1,v2是监督学习型数据
     agg = concat(cols, axis=1)
@@ -52,8 +54,9 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
     print(agg)
     # 删除空值
     if dropnan:
-    	agg.dropna(inplace=True)
+        agg.dropna(inplace=True)
     return agg
+
 
 # load dataset
 dataset = read_csv('pollution.csv', header=0, index_col=0)
@@ -113,7 +116,7 @@ print(test_X[0:6,:])
 # xx = test_X[0:35000,:].reshape((17500,2 ,8))
 # print(xx)
 
-#重构预测数据形状，进行逆缩放
+# 重构预测数据形状，进行逆缩放
 # 之所有下面奇怪的数据拼接操作，是因为：数据逆缩放要求输入数据的形状和缩放之前的输入保值一致
 # 将3D转换为2D
 test_X = test_X.reshape((test_X.shape[0], test_X.shape[2]))

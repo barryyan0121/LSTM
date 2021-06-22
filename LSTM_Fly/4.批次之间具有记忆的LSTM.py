@@ -28,6 +28,8 @@ def create_dataset(dataset, look_back=1):
 		dataX.append(a)
 		dataY.append(dataset[i + look_back, 0])
 	return numpy.array(dataX), numpy.array(dataY)
+
+
 # 定义随机种子，以便重现结果
 numpy.random.seed(7)
 # 加载数据
@@ -40,7 +42,7 @@ dataset = scaler.fit_transform(dataset)
 # 分割2/3数据作为测试
 train_size = int(len(dataset) * 0.67)
 test_size = len(dataset) - train_size
-train, test = dataset[0:train_size,:], dataset[train_size:len(dataset),:]
+train, test = dataset[0:train_size, :], dataset[train_size:len(dataset), :]
 # 预测数据步长为3,三个预测一个，3->1
 look_back = 3
 trainX, trainY = create_dataset(train, look_back)
@@ -56,9 +58,9 @@ model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
 # 网络训练一个周期，循环训练100次
 for i in range(100):
-    #shuffle=False训练时不打数据乱顺序
+	# shuffle=False训练时不打数据乱顺序
 	model.fit(trainX, trainY, epochs=1, batch_size=batch_size, verbose=2, shuffle=False)
-    # 每次训练完都重置网络状态
+	# 每次训练完都重置网络状态
 	model.reset_states()
 # 对训练数据的Y进行预测
 trainPredict = model.predict(trainX, batch_size=batch_size)
@@ -72,10 +74,10 @@ trainY = scaler.inverse_transform([trainY])
 testPredict = scaler.inverse_transform(testPredict)
 testY = scaler.inverse_transform([testY])
 # 计算RMSE误差
-trainScore = math.sqrt(mean_squared_error(trainY[0], trainPredict[:,0]))
-print('Train Score: %.2f RMSE' % (trainScore))
-testScore = math.sqrt(mean_squared_error(testY[0], testPredict[:,0]))
-print('Test Score: %.2f RMSE' % (testScore))
+trainScore = math.sqrt(mean_squared_error(trainY[0], trainPredict[:, 0]))
+print('Train Score: %.2f RMSE' % trainScore)
+testScore = math.sqrt(mean_squared_error(testY[0], testPredict[:, 0]))
+print('Test Score: %.2f RMSE' % testScore)
 
 # 构造一个和dataset格式相同的数组，共145行，dataset为总数据集，把预测的93行训练数据存进去
 trainPredictPlot = numpy.empty_like(dataset)

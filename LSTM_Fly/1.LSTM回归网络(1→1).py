@@ -25,6 +25,8 @@ def create_dataset(dataset, look_back=1):
 		dataX.append(a)
 		dataY.append(dataset[i + look_back, 0])
 	return numpy.array(dataX), numpy.array(dataY)
+
+
 # 定义随机种子，以便重现结果
 numpy.random.seed(7)
 # 加载数据
@@ -62,9 +64,9 @@ testPredict = scaler.inverse_transform(testPredict)
 testY = scaler.inverse_transform([testY])
 # 计算RMSE误差
 trainScore = math.sqrt(mean_squared_error(trainY[0], trainPredict[:,0]))
-print('Train Score: %.2f RMSE' % (trainScore))
+print('Train Score: %.2f RMSE' % trainScore)
 testScore = math.sqrt(mean_squared_error(testY[0], testPredict[:,0]))
-print('Test Score: %.2f RMSE' % (testScore))
+print('Test Score: %.2f RMSE' % testScore)
 
 # 构造一个和dataset格式相同的数组，共145行，dataset为总数据集，把预测的93行训练数据存进去
 trainPredictPlot = numpy.empty_like(dataset)

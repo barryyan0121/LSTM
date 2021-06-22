@@ -119,7 +119,7 @@ test_y = test_y.reshape((len(test_y), 1))
 inv_y = concatenate((test_y, test_X[:, -7:]), axis=1)
 # 对拼接好的数据进行逆缩放
 inv_y = scaler.inverse_transform(inv_y)
-inv_y = inv_y[:,0]
+inv_y = inv_y[:, 0]
 
 # 计算RMSE误差值
 rmse = sqrt(mean_squared_error(inv_y, inv_yhat))
